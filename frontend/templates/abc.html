@@ -8,6 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     /* ─── CSS VARIABLES ─────────────────────────────────────────── */
     :root {
@@ -727,12 +728,105 @@
       .auth-panel { padding: 30px; }
     }
 
+
+    /* ─── PERSONALIZED PRODUCT ADVISOR UPGRADE ───────────────────── */
+    .auth-shell {
+      position: fixed !important;
+      inset: 0 !important;
+      min-height: 100vh !important;
+      background: rgba(8, 13, 30, .55);
+      backdrop-filter: blur(10px);
+      z-index: 9998 !important;
+      overflow-y: auto;
+    }
+    .personal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .advisor-card {
+      background: linear-gradient(135deg, rgba(108,99,255,.12), rgba(16,185,129,.08));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .advisor-title {
+      font-weight: 800;
+      color: var(--accent-1);
+      margin-bottom: 8px;
+      font-family: 'Syne', sans-serif;
+    }
+    .mini-chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .chart-control-bar {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
+    .result-context {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+      margin-top:10px;
+    }
+    .result-context span {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: .78rem;
+    }
+    @media (max-width: 900px) {
+      .personal-grid { grid-template-columns: 1fr; }
+    }
+.auth-hero{
+  position: relative;
+  overflow: hidden;
+}
+
+.left-panel-video{
+  position:absolute;
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  z-index:0;
+
+  opacity:0.95;
+}
+
+.left-panel-overlay{
+  position:absolute;
+  inset:0;
+
+  background:rgba(0,0,0,0.35);
+
+  z-index:1;
+}
+
+.left-panel-content{
+  position:relative;
+  z-index:2;
+}
+
   </style>
 </head>
 <body>
-
-<video autoplay muted loop playsinline class="bg-video">
-  <source src="https://videos.pexels.com/video-files/3191568/3191568-uhd_2560_1440_25fps.mp4" type="video/mp4">
+<video autoplay muted loop playsinline webkit-playsinline class="bg-video">
+  <source src="../static/bg-video.mp4" type="video/mp4">
 </video>
 <div class="auth-bg-overlay" id="authBgOverlay"></div>
 
@@ -809,53 +903,131 @@
 <!-- ═══════════════════════════════ AUTH MODAL ═══════════════════════════════ -->
 <section class="auth-shell" id="authScreen" style="display:none;">
   <div class="auth-card" style="position:relative;">
-    <button class="auth-close-btn" onclick="closeAuth()"><i class="bi bi-x-lg"></i></button>
+    <button class="auth-close-btn" onclick="closeAuth()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <!-- LEFT PANEL -->
     <div class="auth-hero">
-      <div class="brand-icon mb-4"><i class="bi bi-graph-up-arrow"></i></div>
-      <h1>Welcome<br>Back</h1>
-      <p>Login or create an account to access prediction tools, scenario comparison, CSV prediction, and analytics dashboard.</p>
-      <div class="auth-feature-grid">
-        <div class="auth-feature"><i class="bi bi-lightning-charge-fill"></i> Real-time predictions</div>
-        <div class="auth-feature"><i class="bi bi-sliders2"></i> What-if analysis</div>
-        <div class="auth-feature"><i class="bi bi-bullseye"></i> Price optimizer</div>
-        <div class="auth-feature"><i class="bi bi-shield-check"></i> Secure user access</div>
+
+      <!-- VIDEO -->
+      <video autoplay muted loop playsinline webkit-playsinline class="left-panel-video">
+        <source src="../static/bg-video.mp4" type="video/mp4">
+      </video>
+
+      <!-- DARK OVERLAY -->
+      <div class="left-panel-overlay"></div>
+
+      <!-- CONTENT -->
+      <div class="left-panel-content">
+
+        <div class="brand-icon mb-4">
+          <i class="bi bi-graph-up-arrow"></i>
+        </div>
+
+        <h1>Welcome<br>Back</h1>
+
+        <p>
+          Login or create an account to access prediction tools,
+          scenario comparison, CSV prediction, and analytics dashboard.
+        </p>
+
+        <div class="auth-feature-grid">
+
+          <div class="auth-feature">
+            <i class="bi bi-lightning-charge-fill"></i>
+            Real-time predictions
+          </div>
+
+          <div class="auth-feature">
+            <i class="bi bi-sliders2"></i>
+            What-if analysis
+          </div>
+
+          <div class="auth-feature">
+            <i class="bi bi-bullseye"></i>
+            Price optimizer
+          </div>
+
+          <div class="auth-feature">
+            <i class="bi bi-shield-check"></i>
+            Secure user access
+          </div>
+
+        </div>
+
       </div>
     </div>
+
+    <!-- RIGHT PANEL -->
     <div class="auth-panel">
-      <h3 style="font-family:'Syne',sans-serif;font-weight:800;">Start using dashboard 👋</h3>
-      <p class="text-muted mb-4">Login or create an account to continue.</p>
+
+      <h3 style="font-family:'Syne',sans-serif;font-weight:800;">
+        Start using dashboard 👋
+      </h3>
+
+      <p class="text-muted mb-4">
+        Login or create an account to continue.
+      </p>
 
       <div class="auth-tabs">
-        <button class="auth-tab active" id="loginTab" onclick="switchAuth('login')">Login</button>
-        <button class="auth-tab" id="registerTab" onclick="switchAuth('register')">Register</button>
+        <button class="auth-tab active" id="loginTab" onclick="switchAuth('login')">
+          Login
+        </button>
+
+        <button class="auth-tab" id="registerTab" onclick="switchAuth('register')">
+          Register
+        </button>
       </div>
 
-      <button class="auth-google-btn" onclick="googleLoginPlaceholder()">
-        <i class="bi bi-google"></i> Continue with Google
-      </button>
-      <div class="auth-sep">or use username</div>
+      <div id="googleSignInBtn"
+           class="auth-google-btn"
+           style="padding:8px;min-height:52px;">
+      </div>
+
+      <div class="auth-sep">
+        or use username
+      </div>
 
       <div class="mb-3">
         <label class="form-label-custom">Username</label>
-        <input class="input-custom" id="auth-username" placeholder="Enter username">
+
+        <input class="input-custom"
+               id="auth-username"
+               placeholder="Enter username">
       </div>
+
       <div class="mb-3">
         <label class="form-label-custom">Password</label>
-        <input class="input-custom" id="auth-password" type="password" placeholder="Enter password">
+
+        <input class="input-custom"
+               id="auth-password"
+               type="password"
+               placeholder="Enter password">
       </div>
-      <button class="btn-primary-custom w-100 justify-content-center" id="authMainBtn" onclick="loginUser()">
-        <i class="bi bi-box-arrow-in-right"></i> Login
+
+      <button class="btn-primary-custom w-100 justify-content-center"
+              id="authMainBtn"
+              onclick="loginUser()">
+
+        <i class="bi bi-box-arrow-in-right"></i>
+        Login
       </button>
-      <button class="btn-secondary-custom w-100 justify-content-center mt-2" onclick="demoLogin()">
-        <i class="bi bi-speedometer2"></i> Continue as Demo User
+
+      <button class="btn-secondary-custom w-100 justify-content-center mt-2"
+              onclick="demoLogin()">
+
+        <i class="bi bi-speedometer2"></i>
+        Continue as Demo User
       </button>
-      <small class="d-block mt-3 text-muted">Google OAuth will be connected after Google Cloud credentials setup.</small>
+
+      <small class="d-block mt-3 text-muted">
+        Google login is connected using Google Identity Services.
+      </small>
+
     </div>
   </div>
 </section>
-
-<div class="app-wrapper" id="appWrapper" style="display:none;">
-
   <!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
@@ -1046,7 +1218,30 @@
       <div class="row g-4">
         <div class="col-lg-5">
           <div class="card-custom">
-            <h5 class="mb-4" style="font-family:'Syne',sans-serif;font-weight:700;">Input Parameters</h5>
+            <h5 class="mb-4" style="font-family:'Syne',sans-serif;font-weight:700;">Personalized Product Details</h5>
+            <div class="personal-grid mb-3">
+              <div>
+                <label class="form-label-custom">🛍️ Product Name</label>
+                <input type="text" class="input-custom" id="b-product" placeholder="e.g. Wireless Mouse" value="Wireless Mouse"/>
+              </div>
+              <div>
+                <label class="form-label-custom">📦 Category</label>
+                <select class="select-custom" id="b-category">
+                  <option>Electronics</option>
+                  <option>Fashion</option>
+                  <option>Grocery</option>
+                  <option>Beauty</option>
+                  <option>Home & Kitchen</option>
+                  <option>General</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label-custom">📍 Region</label>
+                <input type="text" class="input-custom" id="b-region" placeholder="e.g. Punjab" value="Punjab"/>
+              </div>
+            </div>
+
+            <h5 class="mb-4 mt-4" style="font-family:'Syne',sans-serif;font-weight:700;">Input Parameters</h5>
             <div class="mb-3">
               <label class="form-label-custom">💰 Price (₹)</label>
               <input type="number" class="input-custom" id="b-price" placeholder="e.g. 120.00" min="0" step="0.01" oninput="syncBasicPriceFromInput()"/>
@@ -1124,6 +1319,28 @@
               <small class="text-muted" id="conf-high">High: —</small>
             </div>
           </div>
+
+          <div class="row g-3 mt-3" id="basic-visuals" style="display:none;">
+            <div class="col-lg-6">
+              <div class="mini-chart-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 style="font-weight:800;margin:0;">Factor Impact</h6>
+                  <select id="basic-chart-type" class="select-custom" style="width:auto;padding:6px 10px;" onchange="redrawBasicCharts()">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="doughnut">Doughnut</option>
+                  </select>
+                </div>
+                <canvas id="basicImpactChart" height="190"></canvas>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="advisor-card h-100">
+                <div class="advisor-title"><i class="bi bi-stars"></i> AI Sales Advisor</div>
+                <p id="basic-ai-insight" style="margin:0;color:var(--text-secondary);font-size:.9rem;line-height:1.6;">Run a prediction to get personalized explanation.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1133,6 +1350,25 @@
       <div class="section-header">
         <h2>🔵 What-If Analysis</h2>
         <p>Use sliders to explore scenarios and compare outcomes side by side.</p>
+      </div>
+      <div class="card-custom mb-4">
+        <h5 style="font-family:'Syne',sans-serif;font-weight:800;">Product Context</h5>
+        <div class="personal-grid">
+          <div>
+            <label class="form-label-custom">🛍️ Product Name</label>
+            <input type="text" class="input-custom" id="scenario-product" value="Wireless Mouse">
+          </div>
+          <div>
+            <label class="form-label-custom">📦 Category</label>
+            <select class="select-custom" id="scenario-category">
+              <option>Electronics</option><option>Fashion</option><option>Grocery</option><option>Beauty</option><option>Home & Kitchen</option><option>General</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label-custom">📍 Region</label>
+            <input type="text" class="input-custom" id="scenario-region" value="Punjab">
+          </div>
+        </div>
       </div>
       <div class="row g-4">
         <!-- Scenario A -->
@@ -1236,6 +1472,22 @@
       <div class="row g-4">
         <div class="col-lg-4">
           <div class="card-custom">
+            <h5 class="mb-4" style="font-family:'Syne',sans-serif;font-weight:700;">Product Context</h5>
+            <div class="mb-3">
+              <label class="form-label-custom">Product Name</label>
+              <input type="text" class="input-custom" id="opt-product" value="Wireless Mouse"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-custom">Category</label>
+              <select class="select-custom" id="opt-category">
+                <option>Electronics</option><option>Fashion</option><option>Grocery</option><option>Beauty</option><option>Home & Kitchen</option><option>General</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-custom">Region</label>
+              <input type="text" class="input-custom" id="opt-region" value="Punjab"/>
+            </div>
+            <div class="divider"></div>
             <h5 class="mb-4" style="font-family:'Syne',sans-serif;font-weight:700;">Configuration</h5>
             <div class="mb-3">
               <label class="form-label-custom">Min Price (₹)</label>
@@ -1285,6 +1537,10 @@
             <h6 style="font-weight:700;margin-bottom:16px;">📈 Sales Across Price Range</h6>
             <canvas id="optChart" height="140"></canvas>
           </div>
+          <div class="advisor-card mt-3" id="optimizer-ai-box" style="display:none;">
+            <div class="advisor-title"><i class="bi bi-magic"></i> Optimizer Recommendation</div>
+            <p id="optimizer-ai-text" style="margin:0;color:var(--text-secondary);line-height:1.6;"></p>
+          </div>
         </div>
       </div>
     </div>
@@ -1329,10 +1585,10 @@
           <div class="card-custom mt-4">
             <h6 style="font-weight:700;margin-bottom:12px;">📋 Required CSV Format</h6>
             <div style="background:var(--bg-base);padding:14px;border-radius:8px;font-family:monospace;font-size:.8rem;color:var(--text-secondary);">
-              price,discount,promotion<br>
-              120.00,15,1<br>
-              85.50,0,0<br>
-              200.00,25,1
+              product_name,category,region,price,discount,promotion<br>
+              Wireless Mouse,Electronics,Punjab,500,15,1<br>
+              Kurti,Fashion,Delhi,899,20,1<br>
+              Shampoo,Beauty,India,250,10,0
             </div>
           </div>
         </div>
@@ -1366,21 +1622,30 @@
         <h2>📊 Analytics</h2>
         <p>Explore how price and discount factors drive sales performance.</p>
       </div>
-      <div class="row g-3 mb-4">
-        <div class="col-auto">
+      <div class="chart-control-bar">
+        <div class="d-flex gap-2 flex-wrap">
           <select class="select-custom" id="an-filter" onchange="updateAnalytics()" style="width:auto;">
             <option>All Time</option>
             <option>This Week</option>
             <option>This Month</option>
           </select>
-        </div>
-        <div class="col-auto">
           <select class="select-custom" id="an-promo" onchange="updateAnalytics()" style="width:auto;">
             <option>All Promotions</option>
             <option>With Promotion</option>
             <option>No Promotion</option>
           </select>
+          <select class="select-custom" id="an-chart-style" onchange="updateAnalytics()" style="width:auto;">
+            <option value="bar">Bar Charts</option>
+            <option value="line">Line Charts</option>
+            <option value="doughnut">Doughnut Summary</option>
+          </select>
         </div>
+        <button class="btn-primary-custom" onclick="loadAnalyticsAdvisor()"><i class="bi bi-stars"></i> Generate AI Insights</button>
+      </div>
+
+      <div class="advisor-card mb-4" id="analytics-ai-panel">
+        <div class="advisor-title"><i class="bi bi-robot"></i> AI Analytics Explanation</div>
+        <div id="analytics-ai-insights" style="color:var(--text-secondary);line-height:1.7;">Run some predictions, then click “Generate AI Insights” to get plain-English business explanation.</div>
       </div>
 
       <div class="row g-4">
@@ -1502,17 +1767,184 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════
-   CONSTANTS & STATE
+   BACKEND-CONNECTED SMART SALES PREDICTOR SCRIPT
 ═══════════════════════════════════════════════════════════ */
-const API_BASE = 'http://localhost:8000'; // ← change to your backend URL
-const predHistory = [];
+const API_BASE = 'http://127.0.0.1:8000';
+const GOOGLE_CLIENT_ID = '634168713464-h4nild80hrjaqpu7qmts5d4el1gqtisl.apps.googleusercontent.com';
+
+let predHistory = [];
+let authMode = 'login';
+let currentUser = localStorage.getItem('username') || null;
+let currentRole = localStorage.getItem('role') || null;
+let dashChart = null;
+let optChart = null;
+let analyticCharts = [];
+let analyticsInited = false;
+let selectedCSVFile = null;
+let csvResults = [];
+let scenarioDebounceTimer = null;
+
+const INR = (value) => '₹ ' + Number(value || 0).toLocaleString('en-IN');
+const safeNumber = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
+const getToken = () => localStorage.getItem('token');
+
+function authHeaders(extraHeaders = {}) {
+  const headers = { ...extraHeaders };
+  const token = getToken();
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return headers;
+}
+
+async function apiFetch(path, options = {}) {
+  const optionsCopy = { ...options };
+  optionsCopy.headers = authHeaders(options.headers || {});
+
+  const res = await fetch(`${API_BASE}${path}`, optionsCopy);
+  let data = {};
+  try { data = await res.json(); } catch { data = {}; }
+
+  if (res.status === 401 || res.status === 403) {
+    showToast(data.detail || data.error || 'You are not allowed to access this feature. Please login again.', 'error');
+    throw new Error(data.detail || data.error || 'Unauthorized');
+  }
+
+  if (!res.ok) {
+    throw new Error(data.detail || data.error || `API error: ${res.status}`);
+  }
+
+  return data;
+}
+
+function saveSession(data) {
+  localStorage.setItem('token', data.access_token);
+  localStorage.setItem('username', data.username || 'User');
+  localStorage.setItem('role', data.role || 'user');
+  if (data.email) localStorage.setItem('email', data.email);
+  if (data.picture) localStorage.setItem('picture', data.picture);
+
+  currentUser = data.username || 'User';
+  currentRole = data.role || 'user';
+}
+
+function clearSession() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('username');
+  localStorage.removeItem('role');
+  localStorage.removeItem('email');
+  localStorage.removeItem('picture');
+  currentUser = null;
+  currentRole = null;
+}
+
+function applyRoleAccess() {
+  const role = currentRole || localStorage.getItem('role') || 'user';
+
+  // Normal user can view dashboard, analytics, history only.
+  // Admin and sales manager can use prediction, CSV and optimizer tools.
+  const restrictedTools = ['basic', 'advanced', 'optimizer', 'csv'];
+  document.querySelectorAll('.nav-link-custom').forEach(link => {
+    const onclick = link.getAttribute('onclick') || '';
+    const isRestricted = restrictedTools.some(page => onclick.includes(`'${page}'`) || onclick.includes(`\"${page}\"`));
+    if (isRestricted && role === 'user') {
+      link.style.display = 'none';
+    } else {
+      link.style.display = 'flex';
+    }
+  });
+
+  // If your file has admin panel nav/page ids, show them only for admin.
+  document.querySelectorAll('[data-role="admin"], .admin-only').forEach(el => {
+    el.style.display = role === 'admin' ? '' : 'none';
+  });
+}
+
+function renderGoogleButton() {
+  const target = document.getElementById('googleSignInBtn');
+  if (!target) return;
+  if (!window.google || !google.accounts || !google.accounts.id) {
+    setTimeout(renderGoogleButton, 400);
+    return;
+  }
+
+  target.innerHTML = '';
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleLogin,
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
+
+  google.accounts.id.renderButton(target, {
+    theme: 'outline',
+    size: 'large',
+    type: 'standard',
+    text: 'continue_with',
+    shape: 'rectangular',
+    width: 380
+  });
+}
+
+async function handleGoogleLogin(response) {
+  if (!response || !response.credential) {
+    showToast('Google login failed. No credential received.', 'error');
+    return;
+  }
+
+  try {
+    showSpinner('Signing in with Google…');
+    const data = await apiFetch('/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: response.credential })
+    });
+    hideSpinner();
+
+    if (data.access_token) {
+      saveSession(data);
+      await enterApp(data.username);
+      showToast(`Google login successful. Welcome ${data.username}!`);
+    } else {
+      showToast(data.error || 'Google login failed', 'error');
+    }
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Google login failed', 'error');
+  }
+}
+
+async function callPredict(price, discount, promotion) {
+  const data = await apiFetch('/predict', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      price: parseFloat(price),
+      discount: parseFloat(discount),
+      promotion: parseInt(promotion)
+    })
+  });
+  return Number(data.predicted_sales);
+}
+
+async function fetchHistory() {
+  const data = await apiFetch('/history');
+  predHistory = (data.history || []).map((h, index) => ({
+    id: h._id ? h._id.slice(-6).toUpperCase() : String(index + 1),
+    price: Number(h.price || 0),
+    discount: Number(h.discount || 0),
+    promotion: Number(h.promotion || 0),
+    sales: Number(h.predicted_sales || h.sales || 0),
+    ts: h.created_at || ''
+  }));
+  return predHistory;
+}
+
+async function fetchAnalyticsSummary() {
+  return await apiFetch('/analytics');
+}
 
 /* ═══════════════════════════════════════════════════════════
    AUTH + LANDING FLOW
 ═══════════════════════════════════════════════════════════ */
-let authMode = 'login';
-let currentUser = null;
-
 function openAuth(mode='login') {
   switchAuth(mode);
   document.getElementById('authScreen').style.display = 'flex';
@@ -1536,53 +1968,207 @@ async function registerUser() {
   const username = document.getElementById('auth-username').value.trim();
   const password = document.getElementById('auth-password').value.trim();
   if (!username || !password) { showToast('Enter username and password', 'error'); return; }
-  const res = await fetch(`${API_BASE}/register`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-  const data = await res.json();
-  if (data.message) { showToast(data.message); switchAuth('login'); }
-  else showToast(data.error || 'Registration failed', 'error');
+
+  try {
+    showSpinner('Creating account…');
+    const data = await apiFetch('/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    hideSpinner();
+
+    if (data.message) {
+      showToast(`${data.message}. Now login to continue.`);
+      switchAuth('login');
+    } else {
+      showToast(data.error || 'Registration failed', 'error');
+    }
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Registration failed', 'error');
+  }
 }
 
 async function loginUser() {
   const username = document.getElementById('auth-username').value.trim();
   const password = document.getElementById('auth-password').value.trim();
   if (!username || !password) { showToast('Enter username and password', 'error'); return; }
-  const res = await fetch(`${API_BASE}/login`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-  const data = await res.json();
-  if (data.message) {
-    currentUser = username;
-    document.getElementById('authScreen').style.display = 'none';
-    document.getElementById('landingPage').style.display = 'none';
-    document.getElementById('appWrapper').style.display = 'flex';
-    document.getElementById('userAvatar').textContent = username.slice(0,2).toUpperCase();
-    showToast('Login successful. Welcome ' + username + '!');
-  } else showToast(data.error || 'Login failed', 'error');
+
+  try {
+    showSpinner('Logging in…');
+    const data = await apiFetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    hideSpinner();
+
+    if (data.access_token) {
+      saveSession(data);
+      await enterApp(data.username || username);
+      showToast(`Login successful. Welcome ${data.username || username}!`);
+    } else {
+      showToast(data.error || 'Login failed', 'error');
+    }
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Login failed', 'error');
+  }
+}
+
+async function enterApp(username) {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('landingPage').style.display = 'none';
+  document.getElementById('appWrapper').style.display = 'flex';
+  document.getElementById('userAvatar').textContent = String(username || 'SP').slice(0,2).toUpperCase();
+  applyRoleAccess();
+  await loadDashboardData();
 }
 
 function logoutUser() {
-  currentUser = null;
+  clearSession();
   document.getElementById('appWrapper').style.display = 'none';
   document.getElementById('landingPage').style.display = 'block';
   document.getElementById('authScreen').style.display = 'none';
   showToast('Logged out successfully');
 }
 
-function demoLogin() {
+async function demoLogin() {
   currentUser = 'Demo User';
-  document.getElementById('authScreen').style.display = 'none';
-  document.getElementById('landingPage').style.display = 'none';
-  document.getElementById('appWrapper').style.display = 'flex';
-  document.getElementById('userAvatar').textContent = 'DU';
-  showToast('Demo access enabled. You can view all pages now!');
+  currentRole = 'sales_manager';
+  localStorage.setItem('username', currentUser);
+  localStorage.setItem('role', currentRole);
+  await enterApp(currentUser);
+  showToast('Demo mode is UI-only. Backend protected features need real login.');
 }
 
 function googleLoginPlaceholder() {
-  showToast('Google Auth needs Client ID/Secret setup. We will integrate it next.', 'error');
+  renderGoogleButton();
+  showToast('Use the Google button above to continue.');
+}
+
+// Render Google button after page loads.
+document.addEventListener('DOMContentLoaded', () => {
+  renderGoogleButton();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   NAVIGATION + THEME
+═══════════════════════════════════════════════════════════ */
+const pageTitles = {
+  dashboard:'Dashboard', basic:'Basic Prediction', advanced:'What-If Analysis',
+  optimizer:'Price Optimizer', csv:'CSV Bulk Prediction',
+  analytics:'Analytics', history:'History & Insights'
+};
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link-custom').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  document.getElementById('topbarTitle').textContent = pageTitles[id] || id;
+  if (id === 'dashboard') loadDashboardData();
+  if (id === 'analytics') initAnalytics(true);
+  if (id === 'history') renderHistory();
+  if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open');
+  window.scrollTo(0,0);
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const nextTheme = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', nextTheme);
+
+  const buttonHtml = nextTheme === 'dark'
+    ? '<i class="bi bi-sun-fill"></i><span>Light Mode</span>'
+    : '<i class="bi bi-moon-stars-fill"></i><span>Dark Mode</span>';
+
+  const sidebarBtn = document.getElementById('themeBtn');
+  const landingBtn = document.getElementById('landingThemeBtn');
+  if (sidebarBtn) sidebarBtn.innerHTML = buttonHtml;
+  if (landingBtn) landingBtn.innerHTML = buttonHtml;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST + SPINNER
+═══════════════════════════════════════════════════════════ */
+function showToast(msg, type='success') {
+  const icon = type === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill';
+  const color = type === 'success' ? 'var(--accent-3)' : 'var(--accent-4)';
+  const toast = document.createElement('div');
+  toast.className = 'toast-custom';
+  toast.style.borderColor = color;
+  toast.innerHTML = `<i class="bi bi-${icon}" style="color:${color};font-size:1.2rem;"></i><span>${msg}</span>`;
+  document.getElementById('toastContainer').appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+
+function showSpinner(msg='Processing…') {
+  document.getElementById('spinner-msg').textContent = msg;
+  document.getElementById('spinner').classList.add('show');
+}
+function hideSpinner() { document.getElementById('spinner').classList.remove('show'); }
+
+/* ═══════════════════════════════════════════════════════════
+   DASHBOARD: REAL BACKEND DATA
+═══════════════════════════════════════════════════════════ */
+async function loadDashboardData() {
+  try {
+    const [analytics] = await Promise.all([fetchAnalyticsSummary(), fetchHistory()]);
+    document.getElementById('kpi-total').textContent = Number(analytics.total_predictions || 0).toLocaleString('en-IN');
+    document.getElementById('kpi-avg').textContent = INR(analytics.average_sales || 0);
+    renderRecentTable();
+    initDashChart();
+  } catch (error) {
+    showToast('Could not load dashboard data. Check backend.', 'error');
+  }
+}
+
+function renderRecentTable() {
+  const rows = predHistory.slice(0, 5);
+  const tbody = document.getElementById('recentTable');
+  if (!tbody) return;
+  tbody.innerHTML = rows.length ? rows.map((h, i) => `
+    <tr>
+      <td>#${h.id || i+1}</td>
+      <td>${INR(h.price)}</td>
+      <td>${h.discount}%</td>
+      <td><span class="badge-custom ${h.promotion ? 'badge-success' : 'badge-danger'}">${h.promotion ? 'Yes' : 'No'}</span></td>
+      <td><strong>${INR(h.sales)}</strong></td>
+      <td><span class="badge-custom badge-success">Saved</span></td>
+      <td>${h.ts || 'Just now'}</td>
+    </tr>`).join('') :
+    '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:32px;">No backend predictions yet</td></tr>';
+}
+
+function initDashChart() {
+  const canvas = document.getElementById('dashChart');
+  if (!canvas) return;
+  if (dashChart) dashChart.destroy();
+
+  const recent = [...predHistory].slice(0, 7).reverse();
+  const labels = recent.length ? recent.map((_, i) => `#${i+1}`) : ['No Data'];
+  const values = recent.length ? recent.map(h => h.sales) : [0];
+
+  dashChart = new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label:'Predictions', data: values,
+        borderColor:'#6c63ff', backgroundColor:'rgba(108,99,255,.1)',
+        fill:true, tension:.4, pointRadius:5,
+        pointBackgroundColor:'#6c63ff', pointBorderColor:'#fff', pointBorderWidth:2
+      }]
+    },
+    options: { responsive:true, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{display:false} }, y:{ grid:{color:'rgba(0,0,0,.05)'} } } }
+  });
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1603,157 +2189,70 @@ function syncScenarioPriceFromSlider(type) {
   if (type === 'A') {
     const v = document.getElementById('a-price').value;
     document.getElementById('a-price-input').value = v;
-    document.getElementById('a-price-val').textContent = '₹' + v;
+    document.getElementById('a-price-val').textContent = '₹' + Number(v).toLocaleString('en-IN');
   } else {
     const v = document.getElementById('b-price-s').value;
     document.getElementById('b-price-input').value = v;
-    document.getElementById('b-price-val').textContent = '₹' + v;
+    document.getElementById('b-price-val').textContent = '₹' + Number(v).toLocaleString('en-IN');
   }
+  debounceScenarioPreview(type);
 }
 function syncScenarioPriceFromInput(type) {
   if (type === 'A') {
     const value = Number(document.getElementById('a-price-input').value || 0);
     const slider = document.getElementById('a-price');
     slider.value = Math.min(Math.max(value, Number(slider.min)), Number(slider.max));
-    document.getElementById('a-price-val').textContent = '₹' + value;
+    document.getElementById('a-price-val').textContent = '₹' + value.toLocaleString('en-IN');
   } else {
     const value = Number(document.getElementById('b-price-input').value || 0);
     const slider = document.getElementById('b-price-s');
     slider.value = Math.min(Math.max(value, Number(slider.min)), Number(slider.max));
-    document.getElementById('b-price-val').textContent = '₹' + value;
+    document.getElementById('b-price-val').textContent = '₹' + value.toLocaleString('en-IN');
   }
+  debounceScenarioPreview(type);
+}
+function updateSlider(sliderId, labelId, prefix='', suffix='') {
+  const val = document.getElementById(sliderId).value;
+  document.getElementById(labelId).textContent = prefix + val + suffix;
+  if (sliderId.startsWith('a-')) debounceScenarioPreview('A');
+  if (sliderId.startsWith('b-')) debounceScenarioPreview('B');
+}
+function updatePromoSlider(sliderId, labelId) {
+  const val = document.getElementById(sliderId).value;
+  document.getElementById(labelId).textContent = val === '1' ? 'ON' : 'OFF';
+  if (sliderId.startsWith('a-')) debounceScenarioPreview('A');
+  if (sliderId.startsWith('b-')) debounceScenarioPreview('B');
 }
 
-
-// Seed some demo history
-(function seedHistory() {
-  const names = [[120,15,1],[85,0,0],[200,25,1],[55,10,0],[310,30,1],[75,5,1],[180,20,0],[95,12,1],[400,35,1],[60,0,0]];
-  names.forEach(([p,d,pr],i) => {
-    const sales = simulatePredict(p,d,pr);
-    predHistory.push({ id: 1080-i, price:p, discount:d, promotion:pr, sales, ts: new Date(Date.now()-i*3600000) });
-  });
-})();
-
-/* ═══════════════════════════════════════════════════════════
-   LOCAL SIMULATION (fallback when backend is offline)
-═══════════════════════════════════════════════════════════ */
-function simulatePredict(price, discount, promotion) {
-  const base = price * 18;
-  const discLift = base * (discount / 100) * 1.8;
-  const promoLift = promotion ? base * 0.35 : 0;
-  const noise = (Math.random() - 0.5) * base * 0.05;
-  return Math.max(0, Math.round(base + discLift + promoLift + noise));
+function debounceScenarioPreview(type) {
+  clearTimeout(scenarioDebounceTimer);
+  scenarioDebounceTimer = setTimeout(() => updateScenarioPreview(type), 450);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   API CALL WITH FALLBACK
-═══════════════════════════════════════════════════════════ */
-async function callPredict(price, discount, promotion) {
+async function updateScenarioPreview(type) {
   try {
-    const res = await fetch(`${API_BASE}/predict`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ price: parseFloat(price), discount: parseFloat(discount), promotion: parseInt(promotion) })
-    });
-    if (!res.ok) throw new Error('API error');
-    const data = await res.json();
-    return data.predicted_sales;
-  } catch {
-    return simulatePredict(price, discount, promotion);
+    const input = readScenario(type);
+    const sales = await callPredict(input.price, input.discount, input.promotion);
+    document.getElementById(type === 'A' ? 'a-result' : 'b-result').textContent = INR(sales);
+  } catch (error) {
+    document.getElementById(type === 'A' ? 'a-result' : 'b-result').textContent = 'API Error';
   }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════════════════════ */
-const pageTitles = {
-  dashboard:'Dashboard', basic:'Basic Prediction', advanced:'What-If Analysis',
-  optimizer:'Price Optimizer', csv:'CSV Bulk Prediction',
-  analytics:'Analytics', history:'History & Insights'
-};
-
-function showPage(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-link-custom').forEach(a => a.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  if (el) el.classList.add('active');
-  document.getElementById('topbarTitle').textContent = pageTitles[id] || id;
-  if (id === 'analytics') initAnalytics();
-  if (id === 'history') renderHistory();
-  if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open');
-  window.scrollTo(0,0);
+function readScenario(type) {
+  if (type === 'A') {
+    return {
+      price: safeNumber(document.getElementById('a-price-input').value, document.getElementById('a-price').value),
+      discount: safeNumber(document.getElementById('a-disc').value),
+      promotion: parseInt(document.getElementById('a-promo').value)
+    };
+  }
+  return {
+    price: safeNumber(document.getElementById('b-price-input').value, document.getElementById('b-price-s').value),
+    discount: safeNumber(document.getElementById('b-disc-s').value),
+    promotion: parseInt(document.getElementById('b-promo-s').value)
+  };
 }
-
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-}
-
-/* ═══════════════════════════════════════════════════════════
-   THEME TOGGLE
-═══════════════════════════════════════════════════════════ */
-function toggleTheme() {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  const nextTheme = isDark ? 'light' : 'dark';
-
-  html.setAttribute('data-theme', nextTheme);
-
-  const buttonHtml = nextTheme === 'dark'
-    ? '<i class="bi bi-sun-fill"></i><span>Light Mode</span>'
-    : '<i class="bi bi-moon-stars-fill"></i><span>Dark Mode</span>';
-
-  const sidebarBtn = document.getElementById('themeBtn');
-  const landingBtn = document.getElementById('landingThemeBtn');
-
-  if (sidebarBtn) sidebarBtn.innerHTML = buttonHtml;
-  if (landingBtn) landingBtn.innerHTML = buttonHtml;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════════════════ */
-function showToast(msg, type='success') {
-  const icon = type === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill';
-  const color = type === 'success' ? 'var(--accent-3)' : 'var(--accent-4)';
-  const toast = document.createElement('div');
-  toast.className = 'toast-custom';
-  toast.style.borderColor = color;
-  toast.innerHTML = `<i class="bi bi-${icon}" style="color:${color};font-size:1.2rem;"></i><span>${msg}</span>`;
-  document.getElementById('toastContainer').appendChild(toast);
-  setTimeout(() => toast.remove(), 3500);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   SPINNER
-═══════════════════════════════════════════════════════════ */
-function showSpinner(msg='Processing…') {
-  document.getElementById('spinner-msg').textContent = msg;
-  document.getElementById('spinner').classList.add('show');
-}
-function hideSpinner() { document.getElementById('spinner').classList.remove('show'); }
-
-/* ═══════════════════════════════════════════════════════════
-   PAGE 1: DASHBOARD CHART
-═══════════════════════════════════════════════════════════ */
-(function initDashChart() {
-  const ctx = document.getElementById('dashChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-      datasets: [{
-        label:'Predictions', data:[145,212,178,264,198,310,277],
-        borderColor:'#6c63ff', backgroundColor:'rgba(108,99,255,.1)',
-        fill:true, tension:.4, pointRadius:5,
-        pointBackgroundColor:'#6c63ff', pointBorderColor:'#fff', pointBorderWidth:2
-      }]
-    },
-    options: {
-      responsive:true, plugins:{ legend:{ display:false } },
-      scales: { x:{ grid:{display:false} }, y:{ grid:{color:'rgba(0,0,0,.05)'} } }
-    }
-  });
-})();
 
 /* ═══════════════════════════════════════════════════════════
    PAGE 2: BASIC PREDICT
@@ -1768,121 +2267,109 @@ async function basicPredict() {
     return;
   }
 
-  showSpinner('Running prediction…');
-  const sales = await callPredict(price, discount, promotion);
-  hideSpinner();
+  try {
+    showSpinner('Running prediction…');
+    const sales = await callPredict(price, discount, promotion);
+    hideSpinner();
 
-  document.getElementById('basic-result').textContent = '₹ ' + Number(sales).toLocaleString('en-IN');
-  document.getElementById('basic-sub').textContent = `Price: ₹${price.toLocaleString('en-IN')} | Discount: ${discount}% | Promo: ${promotion ? 'Yes':'No'}`;
+    document.getElementById('basic-result').textContent = INR(sales);
+    document.getElementById('basic-sub').textContent = `Price: ${INR(price)} | Discount: ${discount}% | Promo: ${promotion ? 'Yes':'No'}`;
 
-  document.getElementById('conf-bar').style.width = '72%';
-  document.getElementById('conf-low').textContent = `Low: ₹${Math.round(sales * 0.88).toLocaleString('en-IN')}`;
-  document.getElementById('conf-mid').textContent = `Predicted: ₹${Number(sales).toLocaleString('en-IN')}`;
-  document.getElementById('conf-high').textContent = `High: ₹${Math.round(sales * 1.12).toLocaleString('en-IN')}`;
+    document.getElementById('conf-bar').style.width = '72%';
+    document.getElementById('conf-low').textContent = `Low: ${INR(Math.round(sales * 0.88))}`;
+    document.getElementById('conf-mid').textContent = `Predicted: ${INR(sales)}`;
+    document.getElementById('conf-high').textContent = `High: ${INR(Math.round(sales * 1.12))}`;
 
-  const base = Math.round(price * 18);
-  const dl = Math.round(base * (discount / 100) * 1.8);
-  const pl = promotion ? Math.round(base * 0.35) : 0;
+    const base = Math.round(price * 18);
+    const dl = Math.round(base * (discount / 100) * 1.8);
+    const pl = promotion ? Math.round(base * 0.35) : 0;
 
-  document.getElementById('bd-base').textContent = '₹ ' + base.toLocaleString('en-IN');
-  document.getElementById('bd-disc').textContent = '+ ₹ ' + dl.toLocaleString('en-IN');
-  document.getElementById('bd-promo').textContent = promotion ? '+ ₹ ' + pl.toLocaleString('en-IN') : '₹ 0';
-  document.getElementById('basic-breakdown').style.display = 'flex';
+    document.getElementById('bd-base').textContent = INR(base);
+    document.getElementById('bd-disc').textContent = '+ ' + INR(dl);
+    document.getElementById('bd-promo').textContent = promotion ? '+ ' + INR(pl) : INR(0);
+    document.getElementById('basic-breakdown').style.display = 'flex';
 
-  predHistory.unshift({ id: predHistory.length + 1100, price, discount, promotion, sales, ts: new Date() });
-  showToast('Prediction complete! Sales: ₹ ' + Number(sales).toLocaleString('en-IN'));
+    await loadDashboardData();
+    showToast('Prediction saved to MongoDB! Sales: ' + INR(sales));
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Prediction failed. Check backend.', 'error');
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PAGE 3: WHAT-IF SLIDERS
+   PAGE 3: WHAT-IF ANALYSIS
 ═══════════════════════════════════════════════════════════ */
-function updateSlider(sliderId, labelId, prefix='', suffix='') {
-  const val = document.getElementById(sliderId).value;
-  document.getElementById(labelId).textContent = prefix + val + suffix;
-}
-function updatePromoSlider(sliderId, labelId) {
-  const val = document.getElementById(sliderId).value;
-  document.getElementById(labelId).textContent = val === '1' ? 'ON' : 'OFF';
-}
-
 async function compareScenarios() {
-  showSpinner('Comparing scenarios…');
+  try {
+    showSpinner('Comparing scenarios…');
+    const a = readScenario('A');
+    const b = readScenario('B');
 
-  const aPrice = parseFloat(document.getElementById('a-price-input')?.value || document.getElementById('a-price').value);
-  const aDiscount = parseFloat(document.getElementById('a-disc').value);
-  const aPromotion = parseInt(document.getElementById('a-promo').value);
+    const [salesA, salesB] = await Promise.all([
+      callPredict(a.price, a.discount, a.promotion),
+      callPredict(b.price, b.discount, b.promotion)
+    ]);
+    hideSpinner();
 
-  const bPrice = parseFloat(document.getElementById('b-price-input')?.value || document.getElementById('b-price-s').value);
-  const bDiscount = parseFloat(document.getElementById('b-disc-s').value);
-  const bPromotion = parseInt(document.getElementById('b-promo-s').value);
+    document.getElementById('a-result').textContent = INR(salesA);
+    document.getElementById('b-result').textContent = INR(salesB);
 
-  const [salesA, salesB] = await Promise.all([
-    callPredict(aPrice, aDiscount, aPromotion),
-    callPredict(bPrice, bDiscount, bPromotion)
-  ]);
+    const difference = salesB - salesA;
+    const percentChange = salesA !== 0 ? ((difference / salesA) * 100).toFixed(1) : 0;
 
-  hideSpinner();
+    const pctBox = document.getElementById('pct-change-box');
+    const pctVal = document.getElementById('pct-change-val');
+    pctVal.textContent = (percentChange > 0 ? '+' : '') + percentChange + '%';
+    pctVal.style.color = percentChange >= 0 ? 'var(--accent-3)' : 'var(--accent-4)';
+    pctBox.style.display = 'block';
 
-  document.getElementById('a-result').textContent =
-    '₹ ' + salesA.toLocaleString('en-IN');
+    document.getElementById('compare-table-box').style.display = 'block';
+    document.getElementById('compare-rows').innerHTML = `
+      <div class="compare-cell">Price</div>
+      <div class="compare-cell a">${INR(a.price)}</div>
+      <div class="compare-cell b">${INR(b.price)}</div>
 
-  document.getElementById('b-result').textContent =
-    '₹ ' + salesB.toLocaleString('en-IN');
+      <div class="compare-cell">Discount</div>
+      <div class="compare-cell a">${a.discount}%</div>
+      <div class="compare-cell b">${b.discount}%</div>
 
-  const difference = salesB - salesA;
-  const percentChange = salesA !== 0 ? ((difference / salesA) * 100).toFixed(1) : 0;
+      <div class="compare-cell">Promotion</div>
+      <div class="compare-cell a">${a.promotion ? 'Yes' : 'No'}</div>
+      <div class="compare-cell b">${b.promotion ? 'Yes' : 'No'}</div>
 
-  const pctBox = document.getElementById('pct-change-box');
-  const pctVal = document.getElementById('pct-change-val');
+      <div class="compare-cell">Predicted Sales</div>
+      <div class="compare-cell a">${INR(salesA)}</div>
+      <div class="compare-cell b">${INR(salesB)}</div>
 
-  pctVal.textContent = (percentChange > 0 ? '+' : '') + percentChange + '%';
-  pctVal.style.color = percentChange >= 0 ? 'var(--accent-3)' : 'var(--accent-4)';
-  pctBox.style.display = 'block';
+      <div class="compare-cell">Difference</div>
+      <div class="compare-cell a">—</div>
+      <div class="compare-cell b">${difference >= 0 ? '+' : '-'} ${INR(Math.abs(difference))}</div>
+    `;
 
-  document.getElementById('compare-table-box').style.display = 'block';
+    const insight = difference > 0
+      ? `Scenario B is better. It may increase predicted sales by ${percentChange}%.`
+      : difference < 0
+        ? `Scenario A is better. Scenario B may reduce predicted sales by ${Math.abs(percentChange)}%.`
+        : `Both scenarios are giving almost the same predicted sales.`;
 
-  document.getElementById('compare-rows').innerHTML = `
-    <div class="compare-cell">Price</div>
-    <div class="compare-cell a">₹ ${aPrice.toLocaleString('en-IN')}</div>
-    <div class="compare-cell b">₹ ${bPrice.toLocaleString('en-IN')}</div>
-
-    <div class="compare-cell">Discount</div>
-    <div class="compare-cell a">${aDiscount}%</div>
-    <div class="compare-cell b">${bDiscount}%</div>
-
-    <div class="compare-cell">Promotion</div>
-    <div class="compare-cell a">${aPromotion ? 'Yes' : 'No'}</div>
-    <div class="compare-cell b">${bPromotion ? 'Yes' : 'No'}</div>
-
-    <div class="compare-cell">Predicted Sales</div>
-    <div class="compare-cell a">₹ ${salesA.toLocaleString('en-IN')}</div>
-    <div class="compare-cell b">₹ ${salesB.toLocaleString('en-IN')}</div>
-
-    <div class="compare-cell">Difference</div>
-    <div class="compare-cell a">—</div>
-    <div class="compare-cell b">${difference >= 0 ? '+' : '-'} ₹ ${Math.abs(difference).toLocaleString('en-IN')}</div>
-  `;
-
-  const insight = difference > 0
-    ? `Scenario B is better. It may increase predicted sales by ${percentChange}%.`
-    : difference < 0
-      ? `Scenario A is better. Scenario B may reduce predicted sales by ${Math.abs(percentChange)}%.`
-      : `Both scenarios are giving almost the same predicted sales.`;
-
-  document.getElementById('compare-insight-box').innerHTML = `
-    <div class="insight-box">
-      <div class="insight-title">Business Insight</div>
-      <p>${insight}</p>
-    </div>
-  `;
-
-  showToast('Scenario comparison completed!');
+    document.getElementById('compare-insight-box').innerHTML = `
+      <div class="insight-box">
+        <div class="insight-title">Business Insight</div>
+        <p>${insight}</p>
+      </div>
+    `;
+    await loadDashboardData();
+    showToast('Scenario comparison saved and completed!');
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Scenario comparison failed', 'error');
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
    PAGE 4: PRICE OPTIMIZER
 ═══════════════════════════════════════════════════════════ */
-let optChart;
 async function runOptimizer() {
   const minP = +document.getElementById('opt-min').value;
   const maxP = +document.getElementById('opt-max').value;
@@ -1890,148 +2377,176 @@ async function runOptimizer() {
   const promo = +document.getElementById('opt-promo').value;
   if (minP >= maxP) { showToast('Min price must be less than max', 'error'); return; }
 
-  showSpinner('Optimizing price range…');
-  const step = (maxP - minP) / 20;
-  const prices = [], sales = [];
-  for (let p = minP; p <= maxP; p += step) {
-    prices.push(Math.round(p));
-    sales.push(await callPredict(Math.round(p), disc, promo));
+  try {
+    showSpinner('Optimizing price range with backend model…');
+    const step = Math.max(1, (maxP - minP) / 20);
+    const prices = [], sales = [];
+    for (let p = minP; p <= maxP; p += step) {
+      const roundedPrice = Math.round(p);
+      prices.push(roundedPrice);
+      sales.push(await callPredict(roundedPrice, disc, promo));
+    }
+    hideSpinner();
+
+    const maxIdx = sales.indexOf(Math.max(...sales));
+    document.getElementById('opt-price-result').textContent = INR(prices[maxIdx]);
+    document.getElementById('opt-sales-result').textContent = INR(sales[maxIdx]);
+
+    if (optChart) optChart.destroy();
+    optChart = new Chart(document.getElementById('optChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: prices,
+        datasets: [{
+          label:'Predicted Sales', data:sales,
+          borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,.12)',
+          fill:true, tension:.3, pointRadius: sales.map((_,i)=>i===maxIdx?8:3),
+          pointBackgroundColor: sales.map((_,i)=>i===maxIdx?'#f59e0b':'rgba(245,158,11,.5)')
+        }]
+      },
+      options: { responsive:true, plugins:{ legend:{display:false} }, scales:{ x:{title:{display:true,text:'Price (₹)'}}, y:{title:{display:true,text:'Predicted Sales'}} } }
+    });
+    await loadDashboardData();
+    showToast('Optimal price found: ' + INR(prices[maxIdx]));
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Optimizer failed', 'error');
   }
-  hideSpinner();
-
-  const maxIdx = sales.indexOf(Math.max(...sales));
-  document.getElementById('opt-price-result').textContent = '₹ ' + prices[maxIdx];
-  document.getElementById('opt-sales-result').textContent = '₹ ' + sales[maxIdx].toLocaleString('en-IN');
-
-  if (optChart) optChart.destroy();
-  optChart = new Chart(document.getElementById('optChart').getContext('2d'), {
-    type: 'line',
-    data: {
-      labels: prices,
-      datasets: [{
-        label:'Predicted Sales', data:sales,
-        borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,.12)',
-        fill:true, tension:.3, pointRadius: sales.map((_,i)=>i===maxIdx?8:3),
-        pointBackgroundColor: sales.map((_,i)=>i===maxIdx?'#f59e0b':'rgba(245,158,11,.5)')
-      }]
-    },
-    options: { responsive:true, plugins:{ legend:{display:false} }, scales:{ x:{title:{display:true,text:'Price (₹)'}}, y:{title:{display:true,text:'Predicted Sales'}} } }
-  });
-  showToast('Optimal price found: ₹ ' + prices[maxIdx]);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PAGE 5: CSV UPLOAD
+   PAGE 5: CSV UPLOAD CONNECTED TO /csv-predict
 ═══════════════════════════════════════════════════════════ */
-let csvData = [];
 function handleFileSelect(e) { processFile(e.target.files[0]); }
 function handleDrop(e) { e.preventDefault(); document.getElementById('dropZone').classList.remove('dragover'); processFile(e.dataTransfer.files[0]); }
 
 function processFile(file) {
   if (!file || !file.name.endsWith('.csv')) { showToast('Please select a valid CSV file', 'error'); return; }
+  selectedCSVFile = file;
   document.getElementById('file-name').textContent = file.name;
   document.getElementById('file-size').textContent = (file.size / 1024).toFixed(1) + ' KB';
   document.getElementById('file-info').style.display = 'block';
-  const reader = new FileReader();
-  reader.onload = e => {
-    const lines = e.target.result.trim().split('\n');
-    csvData = lines.slice(1).filter(l=>l).map((line,i) => {
-      const [price,discount,promotion] = line.split(',').map(s=>s.trim());
-      return { row:i+1, price:parseFloat(price)||0, discount:parseFloat(discount)||0, promotion:parseInt(promotion)||0 };
-    });
-    showToast(`Loaded ${csvData.length} rows from CSV`);
-  };
-  reader.readAsText(file);
+  showToast('CSV selected. Click Upload & Predict to process with backend.');
 }
 
 async function uploadCSV() {
-  if (!csvData.length) { showToast('Please upload a CSV file first', 'error'); return; }
-  showSpinner(`Predicting ${csvData.length} rows…`);
-  const results = [];
-  for (const row of csvData) {
-    const sales = await callPredict(row.price, row.discount, row.promotion);
-    results.push({ ...row, sales });
+  if (!selectedCSVFile) { showToast('Please upload a CSV file first', 'error'); return; }
+  try {
+    showSpinner('Uploading CSV and running backend predictions…');
+    const formData = new FormData();
+    formData.append('file', selectedCSVFile);
+    const data = await apiFetch('/csv-predict', { method: 'POST', body: formData });
+    hideSpinner();
+
+    csvResults = (data.results || []).map(r => ({ ...r, sales: r.predicted_sales }));
+    const tbody = document.getElementById('csv-table');
+    tbody.innerHTML = csvResults.length ? csvResults.map(r => `
+      <tr>
+        <td>${r.row}</td>
+        <td>${INR(r.price)}</td>
+        <td>${r.discount}%</td>
+        <td><span class="badge-custom ${r.promotion?'badge-success':'badge-danger'}">${r.promotion?'Yes':'No'}</span></td>
+        <td><strong>${INR(r.predicted_sales || r.sales)}</strong></td>
+      </tr>`).join('') :
+      '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px;">No rows returned from backend</td></tr>';
+    showToast(`${csvResults.length} CSV predictions saved to MongoDB!`);
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'CSV prediction failed', 'error');
   }
-  hideSpinner();
-  const tbody = document.getElementById('csv-table');
-  tbody.innerHTML = results.map(r => `
-    <tr>
-      <td>${r.row}</td>
-      <td>₹ ${r.price.toFixed(2)}</td>
-      <td>${r.discount}%</td>
-      <td><span class="badge-custom ${r.promotion?'badge-success':'badge-danger'}">${r.promotion?'Yes':'No'}</span></td>
-      <td><strong>₹ ${Number(r.sales).toLocaleString('en-IN')}</strong></td>
-    </tr>`).join('');
-  csvData = results;
-  showToast(`${results.length} predictions complete!`);
 }
 
 function downloadCSVResults() {
-  if (!csvData.length) { showToast('No results to download', 'error'); return; }
+  if (!csvResults.length) { showToast('No results to download', 'error'); return; }
   const header = 'row,price,discount,promotion,predicted_sales\n';
-  const rows = csvData.map(r => `${r.row},${r.price},${r.discount},${r.promotion},${r.sales||''}`).join('\n');
+  const rows = csvResults.map(r => `${r.row},${r.price},${r.discount},${r.promotion},${r.predicted_sales || r.sales || ''}`).join('\n');
   const blob = new Blob([header + rows], { type: 'text/csv' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'predictions_results.csv'; a.click();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'predictions_results.csv';
+  a.click();
   showToast('CSV downloaded!');
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PAGE 6: ANALYTICS CHARTS
+   PAGE 6: ANALYTICS CHARTS FROM BACKEND HISTORY
 ═══════════════════════════════════════════════════════════ */
-let analyticsInited = false, analyticCharts = [];
-function initAnalytics() {
-  if (analyticsInited) return;
+async function initAnalytics(force=false) {
+  if (analyticsInited && !force) return;
   analyticsInited = true;
-  drawAnalyticsCharts();
+  await drawAnalyticsCharts();
 }
-function updateAnalytics() { analyticCharts.forEach(c=>c.destroy()); analyticCharts=[]; analyticsInited=false; initAnalytics(); }
+function updateAnalytics() { analyticCharts.forEach(c=>c.destroy()); analyticCharts=[]; analyticsInited=false; initAnalytics(true); }
 
-function drawAnalyticsCharts() {
-  const prices = [20,40,60,80,100,150,200,250,300,400];
-  const salesByPrice = prices.map(p => simulatePredict(p,10,0));
-  const discs = [0,5,10,15,20,25,30,35,40,50];
-  const salesByDisc = discs.map(d => simulatePredict(100,d,0));
+async function drawAnalyticsCharts() {
+  try {
+    await fetchHistory();
+  } catch {
+    showToast('Could not load analytics history', 'error');
+  }
+
+  analyticCharts.forEach(c => c.destroy && c.destroy());
+  analyticCharts = [];
+
+  const history = predHistory.length ? predHistory : [];
+  const labels = history.map((_, i) => `#${i+1}`).reverse();
+  const priceValues = history.map(h => h.price).reverse();
+  const discountValues = history.map(h => h.discount).reverse();
+  const salesValues = history.map(h => h.sales).reverse();
 
   const mkChart = (id, type, labels, data, color, xlabel, ylabel) => {
-    const c = new Chart(document.getElementById(id).getContext('2d'), {
-      type, data: {
-        labels, datasets:[{ label:ylabel, data, backgroundColor: Array.isArray(color)?color:color+'33', borderColor: color, borderWidth:2, fill:type==='line', tension:.4, pointRadius:5 }]
-      },
+    const canvas = document.getElementById(id);
+    if (!canvas) return null;
+    const c = new Chart(canvas.getContext('2d'), {
+      type,
+      data: { labels, datasets:[{ label:ylabel, data, backgroundColor: color+'33', borderColor: color, borderWidth:2, fill:type==='line', tension:.4, pointRadius:5 }] },
       options: { responsive:true, plugins:{ legend:{display:false} }, scales:{ x:{title:{display:true,text:xlabel}}, y:{title:{display:true,text:ylabel}} } }
     });
     analyticCharts.push(c);
     return c;
   };
 
-  mkChart('priceChart','line', prices, salesByPrice,'#6c63ff','Price (₹)','Predicted Sales');
-  mkChart('discountChart','line', discs, salesByDisc,'#10b981','Discount (%)','Predicted Sales');
+  mkChart('priceChart','line', priceValues.length ? priceValues : ['No Data'], salesValues.length ? salesValues : [0], '#6c63ff','Price (₹)','Predicted Sales');
+  mkChart('discountChart','line', discountValues.length ? discountValues : ['No Data'], salesValues.length ? salesValues : [0], '#10b981','Discount (%)','Predicted Sales');
 
-  // Distribution
-  const bins = [0,1000,2000,3000,4000,5000,6000,8000,10000];
+  const bins = [0,100,500,1000,2000,5000,10000,20000,50000];
   const hist = new Array(bins.length-1).fill(0);
-  predHistory.forEach(h => { for(let i=0;i<bins.length-1;i++) if(h.sales>=bins[i]&&h.sales<bins[i+1]) hist[i]++; });
-  const dColors = ['#6c63ff','#a78bfa','#f59e0b','#fbbf24','#10b981','#34d399','#3b82f6','#60a5fa'];
-  new Chart(document.getElementById('distChart').getContext('2d'), {
-    type:'bar',
-    data:{ labels:bins.slice(0,-1).map((b,i)=>`₹${b/1000}k-₹${bins[i+1]/1000}k`), datasets:[{ label:'Count', data:hist, backgroundColor:dColors }]},
-    options:{ responsive:true, plugins:{legend:{display:false}} }
-  }).constructor && analyticCharts.push({ destroy:()=>{} });
+  history.forEach(h => { for(let i=0;i<bins.length-1;i++) if(h.sales>=bins[i]&&h.sales<bins[i+1]) hist[i]++; });
+  const distCanvas = document.getElementById('distChart');
+  if (distCanvas) {
+    const c = new Chart(distCanvas.getContext('2d'), {
+      type:'bar',
+      data:{ labels:bins.slice(0,-1).map((b,i)=>`${INR(b)}-${INR(bins[i+1])}`), datasets:[{ label:'Count', data:hist, backgroundColor:['#6c63ff','#a78bfa','#f59e0b','#fbbf24','#10b981','#34d399','#3b82f6','#60a5fa'] }]},
+      options:{ responsive:true, plugins:{legend:{display:false}} }
+    });
+    analyticCharts.push(c);
+  }
 
-  // Promo vs no promo
-  const promoSales = predHistory.filter(h=>h.promotion===1).reduce((s,h)=>s+h.sales,0) / (predHistory.filter(h=>h.promotion===1).length||1);
-  const noPromoSales = predHistory.filter(h=>h.promotion===0).reduce((s,h)=>s+h.sales,0) / (predHistory.filter(h=>h.promotion===0).length||1);
-  new Chart(document.getElementById('promoChart').getContext('2d'), {
-    type:'bar',
-    data:{ labels:['With Promotion','No Promotion'], datasets:[{ data:[Math.round(promoSales), Math.round(noPromoSales)], backgroundColor:['rgba(16,185,129,.7)','rgba(239,68,68,.7)'], borderRadius:8 }]},
-    options:{ responsive:true, plugins:{legend:{display:false}} }
-  });
+  const promoItems = history.filter(h=>h.promotion===1);
+  const noPromoItems = history.filter(h=>h.promotion===0);
+  const promoSales = promoItems.reduce((s,h)=>s+h.sales,0) / (promoItems.length||1);
+  const noPromoSales = noPromoItems.reduce((s,h)=>s+h.sales,0) / (noPromoItems.length||1);
+  const promoCanvas = document.getElementById('promoChart');
+  if (promoCanvas) {
+    const c = new Chart(promoCanvas.getContext('2d'), {
+      type:'bar',
+      data:{ labels:['With Promotion','No Promotion'], datasets:[{ data:[Math.round(promoSales), Math.round(noPromoSales)], backgroundColor:['rgba(16,185,129,.7)','rgba(239,68,68,.7)'], borderRadius:8 }]},
+      options:{ responsive:true, plugins:{legend:{display:false}} }
+    });
+    analyticCharts.push(c);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PAGE 7: HISTORY
+   PAGE 7: HISTORY FROM /history
 ═══════════════════════════════════════════════════════════ */
-function renderHistory() {
+async function renderHistory() {
+  try {
+    await fetchHistory();
+  } catch (error) {
+    showToast('Could not load history from backend', 'error');
+  }
+
   const search = (document.getElementById('hist-search').value || '').toLowerCase();
   const promoF = document.getElementById('hist-promo-filter').value;
   const sort   = document.getElementById('hist-sort').value;
@@ -2047,16 +2562,379 @@ function renderHistory() {
   document.getElementById('history-table').innerHTML = data.length ? data.map(h => `
     <tr>
       <td>#${h.id}</td>
-      <td>₹ ${h.price.toFixed(2)}</td>
+      <td>${INR(h.price)}</td>
       <td>${h.discount}%</td>
       <td><span class="badge-custom ${h.promotion?'badge-success':'badge-danger'}">${h.promotion?'Yes':'No'}</span></td>
-      <td><strong>₹ ${Number(h.sales).toLocaleString('en-IN')}</strong></td>
+      <td><strong>${INR(h.sales)}</strong></td>
       <td><div style="background:var(--border);border-radius:4px;height:8px;overflow:hidden;width:80px;"><div style="height:100%;background:var(--grad-3);width:${Math.min(100,h.sales/100)}%;"></div></div></td>
-      <td style="color:var(--text-muted);font-size:.8rem;">${h.ts.toLocaleTimeString()}</td>
+      <td style="color:var(--text-muted);font-size:.8rem;">${h.ts || '-'}</td>
     </tr>`).join('') :
-    '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">No records found</td></tr>';
+    '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">No records found in MongoDB</td></tr>';
 }
 function filterHistory() { renderHistory(); }
+
+/* Initialize auth tab state */
+switchAuth('login');
 </script>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   PERSONALIZED PRODUCT + AI ADVISOR OVERRIDES
+═══════════════════════════════════════════════════════════ */
+let lastBasicPrediction = null;
+let basicImpactChart = null;
+
+function getBasicProductMeta() {
+  return {
+    product_name: (document.getElementById('b-product')?.value || 'General Product').trim(),
+    category: document.getElementById('b-category')?.value || 'General',
+    region: (document.getElementById('b-region')?.value || 'India').trim()
+  };
+}
+
+function getScenarioProductMeta() {
+  return {
+    product_name: (document.getElementById('scenario-product')?.value || 'General Product').trim(),
+    category: document.getElementById('scenario-category')?.value || 'General',
+    region: (document.getElementById('scenario-region')?.value || 'India').trim()
+  };
+}
+
+function getOptimizerProductMeta() {
+  return {
+    product_name: (document.getElementById('opt-product')?.value || 'General Product').trim(),
+    category: document.getElementById('opt-category')?.value || 'General',
+    region: (document.getElementById('opt-region')?.value || 'India').trim()
+  };
+}
+
+async function callPredict(price, discount, promotion, meta = {}) {
+  const payload = {
+    price: parseFloat(price),
+    discount: parseFloat(discount),
+    promotion: parseInt(promotion),
+    product_name: meta.product_name || 'General Product',
+    category: meta.category || 'General',
+    region: meta.region || 'India'
+  };
+  return await apiFetch('/predict', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+}
+
+async function basicPredict() {
+  const price = parseFloat(document.getElementById('b-price').value);
+  const discount = parseFloat(document.getElementById('b-discount').value);
+  const promotion = parseInt(document.getElementById('b-promotion').value);
+  const meta = getBasicProductMeta();
+
+  if (!meta.product_name || isNaN(price) || isNaN(discount)) {
+    showToast('Please fill product name, price and discount', 'error');
+    return;
+  }
+
+  try {
+    showSpinner('Generating personalized prediction…');
+    const data = await callPredict(price, discount, promotion, meta);
+    hideSpinner();
+
+    const sales = Number(data.predicted_sales || 0);
+    lastBasicPrediction = data;
+
+    document.getElementById('basic-result').textContent = INR(sales);
+    document.getElementById('basic-sub').innerHTML = `
+      <div class="result-context">
+        <span>${meta.product_name}</span><span>${meta.category}</span><span>${meta.region}</span>
+      </div>`;
+
+    document.getElementById('conf-bar').style.width = '86%';
+    document.getElementById('conf-low').textContent = `Low: ${INR(Math.round(sales * 0.88))}`;
+    document.getElementById('conf-mid').textContent = `Prediction: ${INR(sales)}`;
+    document.getElementById('conf-high').textContent = `High: ${INR(Math.round(sales * 1.12))}`;
+
+    const breakdown = data.breakdown || {};
+    document.getElementById('bd-base').textContent = (breakdown.base_percent ?? 0) + '%';
+    document.getElementById('bd-disc').textContent = (breakdown.discount_percent ?? 0) + '%';
+    document.getElementById('bd-promo').textContent = (breakdown.promotion_percent ?? 0) + '%';
+    document.getElementById('basic-breakdown').style.display = 'flex';
+    document.getElementById('basic-visuals').style.display = 'flex';
+    document.getElementById('basic-ai-insight').textContent = data.insight || 'Prediction generated successfully.';
+
+    redrawBasicCharts();
+    await loadDashboardData();
+    showToast('Personalized prediction generated!');
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Prediction failed', 'error');
+  }
+}
+
+function redrawBasicCharts() {
+  if (!lastBasicPrediction) return;
+  const chartType = document.getElementById('basic-chart-type')?.value || 'bar';
+  const breakdown = lastBasicPrediction.breakdown || {};
+  const values = [
+    Number(breakdown.base_percent || 0),
+    Number(breakdown.discount_percent || 0),
+    Number(breakdown.promotion_percent || 0)
+  ];
+  const ctx = document.getElementById('basicImpactChart');
+  if (!ctx) return;
+  if (basicImpactChart) basicImpactChart.destroy();
+  basicImpactChart = new Chart(ctx.getContext('2d'), {
+    type: chartType,
+    data: {
+      labels: ['Base Price Effect', 'Discount Effect', 'Promotion Effect'],
+      datasets: [{
+        label: 'Contribution %',
+        data: values,
+        backgroundColor: ['rgba(108,99,255,.75)', 'rgba(16,185,129,.75)', 'rgba(245,158,11,.75)'],
+        borderColor: ['#6c63ff', '#10b981', '#f59e0b'],
+        borderWidth: 2,
+        borderRadius: 10
+      }]
+    },
+    options: { responsive: true, plugins: { legend: { display: chartType !== 'bar' } }, scales: chartType === 'bar' ? { y: { beginAtZero: true, max: 100 } } : {} }
+  });
+}
+
+async function compareScenarios() {
+  const meta = getScenarioProductMeta();
+  const a = {
+    price: parseFloat(document.getElementById('a-price').value),
+    discount: parseFloat(document.getElementById('a-disc').value),
+    promotion: parseInt(document.getElementById('a-promo').value)
+  };
+  const b = {
+    price: parseFloat(document.getElementById('b-price-s').value),
+    discount: parseFloat(document.getElementById('b-disc-s').value),
+    promotion: parseInt(document.getElementById('b-promo-s').value)
+  };
+  try {
+    showSpinner('Comparing personalized scenarios…');
+    const [resA, resB] = await Promise.all([
+      callPredict(a.price, a.discount, a.promotion, {...meta, product_name: meta.product_name + ' - Scenario A'}),
+      callPredict(b.price, b.discount, b.promotion, {...meta, product_name: meta.product_name + ' - Scenario B'})
+    ]);
+    hideSpinner();
+    const salesA = Number(resA.predicted_sales || 0);
+    const salesB = Number(resB.predicted_sales || 0);
+    document.getElementById('a-result').textContent = INR(salesA);
+    document.getElementById('b-result').textContent = INR(salesB);
+    const difference = salesB - salesA;
+    const percentChange = salesA !== 0 ? ((difference / salesA) * 100).toFixed(1) : 0;
+    const pctBox = document.getElementById('pct-change-box');
+    const pctVal = document.getElementById('pct-change-val');
+    pctVal.textContent = (percentChange > 0 ? '+' : '') + percentChange + '%';
+    pctVal.style.color = percentChange >= 0 ? 'var(--accent-3)' : 'var(--accent-4)';
+    pctBox.style.display = 'block';
+    document.getElementById('compare-table-box').style.display = 'block';
+    document.getElementById('compare-rows').innerHTML = `
+      <div class="compare-cell">Product</div><div class="compare-cell a">${meta.product_name}</div><div class="compare-cell b">${meta.product_name}</div>
+      <div class="compare-cell">Price</div><div class="compare-cell a">${INR(a.price)}</div><div class="compare-cell b">${INR(b.price)}</div>
+      <div class="compare-cell">Discount</div><div class="compare-cell a">${a.discount}%</div><div class="compare-cell b">${b.discount}%</div>
+      <div class="compare-cell">Promotion</div><div class="compare-cell a">${a.promotion ? 'Yes' : 'No'}</div><div class="compare-cell b">${b.promotion ? 'Yes' : 'No'}</div>
+      <div class="compare-cell">Predicted Sales</div><div class="compare-cell a">${INR(salesA)}</div><div class="compare-cell b">${INR(salesB)}</div>
+      <div class="compare-cell">Difference</div><div class="compare-cell a">—</div><div class="compare-cell b">${difference >= 0 ? '+' : '-'} ${INR(Math.abs(difference))}</div>`;
+    const insight = difference > 0
+      ? `For ${meta.product_name}, Scenario B is better in ${meta.region}. It may increase predicted sales by ${percentChange}%. ${resB.insight || ''}`
+      : difference < 0
+        ? `For ${meta.product_name}, Scenario A is safer. Scenario B may reduce predicted sales by ${Math.abs(percentChange)}%. ${resA.insight || ''}`
+        : `Both scenarios are giving nearly equal sales for ${meta.product_name}.`;
+    document.getElementById('compare-insight-box').innerHTML = `<div class="insight-box"><div class="insight-title">AI Scenario Recommendation</div><p>${insight}</p></div>`;
+    await loadDashboardData();
+    showToast('Scenario comparison completed!');
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Scenario comparison failed', 'error');
+  }
+}
+
+async function runOptimizer() {
+  const minP = +document.getElementById('opt-min').value;
+  const maxP = +document.getElementById('opt-max').value;
+  const disc  = +document.getElementById('opt-disc').value;
+  const promo = +document.getElementById('opt-promo').value;
+  const meta = getOptimizerProductMeta();
+  if (minP >= maxP) { showToast('Min price must be less than max', 'error'); return; }
+  try {
+    showSpinner('Finding best price using ML model…');
+    const step = Math.max(1, Math.round((maxP - minP) / 20));
+    const prices = [], sales = [];
+    for (let p = minP; p <= maxP; p += step) {
+      const roundedPrice = Math.round(p);
+      const res = await callPredict(roundedPrice, disc, promo, meta);
+      prices.push(roundedPrice);
+      sales.push(Number(res.predicted_sales || 0));
+    }
+    hideSpinner();
+    const maxIdx = sales.indexOf(Math.max(...sales));
+    document.getElementById('opt-price-result').textContent = INR(prices[maxIdx]);
+    document.getElementById('opt-sales-result').textContent = INR(sales[maxIdx]);
+    if (optChart) optChart.destroy();
+    optChart = new Chart(document.getElementById('optChart').getContext('2d'), {
+      type: 'line',
+      data: { labels: prices, datasets: [{ label:'Predicted Sales', data:sales, borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,.12)', fill:true, tension:.3, pointRadius: sales.map((_,i)=>i===maxIdx?8:3), pointBackgroundColor: sales.map((_,i)=>i===maxIdx?'#f59e0b':'rgba(245,158,11,.5)') }] },
+      options: { responsive:true, plugins:{ legend:{display:false} }, scales:{ x:{title:{display:true,text:'Price (₹)'}}, y:{title:{display:true,text:'Predicted Sales'}} } }
+    });
+    document.getElementById('optimizer-ai-box').style.display = 'block';
+    document.getElementById('optimizer-ai-text').textContent = `For ${meta.product_name} (${meta.category}) in ${meta.region}, the best tested price is ${INR(prices[maxIdx])} with expected sales of ${INR(sales[maxIdx])}. Prices around this range should be preferred because they give the highest predicted sales in the current model simulation.`;
+    await loadDashboardData();
+    showToast('Optimal price found!');
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'Optimizer failed', 'error');
+  }
+}
+
+async function uploadCSV() {
+  if (!selectedCSVFile) { showToast('Please upload a CSV file first', 'error'); return; }
+  try {
+    showSpinner('Uploading CSV and running personalized predictions…');
+    const formData = new FormData();
+    formData.append('file', selectedCSVFile);
+    const data = await apiFetch('/csv-predict', { method: 'POST', body: formData });
+    hideSpinner();
+    csvResults = data.results || [];
+    const tbody = document.getElementById('csv-table');
+    tbody.innerHTML = csvResults.length ? csvResults.map(r => `
+      <tr>
+        <td>${r.row}</td>
+        <td><strong>${r.product_name || '-'}</strong><br><small class="text-muted">${r.category || 'General'} • ${r.region || 'India'}</small></td>
+        <td>${INR(r.price)}</td>
+        <td>${r.discount}%</td>
+        <td><span class="badge-custom ${r.promotion?'badge-success':'badge-danger'}">${r.promotion?'Yes':'No'}</span></td>
+        <td><strong>${INR(r.predicted_sales)}</strong></td>
+      </tr>`).join('') :
+      '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:32px;">No rows returned from backend</td></tr>';
+    showToast(`${csvResults.length} CSV predictions saved!`);
+    await loadDashboardData();
+  } catch (error) {
+    hideSpinner();
+    showToast(error.message || 'CSV prediction failed', 'error');
+  }
+}
+
+async function fetchHistory() {
+  const data = await apiFetch('/history');
+  predHistory = (data.history || []).map((h, index) => ({
+    id: h._id ? h._id.slice(-6).toUpperCase() : String(index + 1),
+    product_name: h.product_name || 'General Product',
+    category: h.category || 'General',
+    region: h.region || 'India',
+    price: Number(h.price || 0),
+    discount: Number(h.discount || 0),
+    promotion: Number(h.promotion || 0),
+    sales: Number(h.predicted_sales || h.sales || 0),
+    insight: h.insight || '',
+    ts: h.created_at || ''
+  }));
+  return predHistory;
+}
+
+async function renderHistory() {
+  try { await fetchHistory(); } catch (error) { showToast('Could not load history from backend', 'error'); }
+  const search = (document.getElementById('hist-search').value || '').toLowerCase();
+  const promoF = document.getElementById('hist-promo-filter').value;
+  const sort   = document.getElementById('hist-sort').value;
+  let data = [...predHistory];
+  if (search) data = data.filter(h => String(h.price).includes(search) || String(h.sales).includes(search) || h.product_name.toLowerCase().includes(search) || h.category.toLowerCase().includes(search));
+  if (promoF !== '') data = data.filter(h => String(h.promotion) === promoF);
+  if (sort === 'oldest') data.reverse();
+  else if (sort === 'highest') data.sort((a,b)=>b.sales-a.sales);
+  else if (sort === 'lowest') data.sort((a,b)=>a.sales-b.sales);
+  document.getElementById('hist-count').textContent = data.length;
+  document.getElementById('history-table').innerHTML = data.length ? data.map(h => `
+    <tr>
+      <td>#${h.id}</td>
+      <td><strong>${h.product_name}</strong><br><small class="text-muted">${h.category} • ${h.region}</small></td>
+      <td>${INR(h.price)}</td>
+      <td>${h.discount}%</td>
+      <td><span class="badge-custom ${h.promotion?'badge-success':'badge-danger'}">${h.promotion?'Yes':'No'}</span></td>
+      <td><strong>${INR(h.sales)}</strong><br><small class="text-muted">${h.insight ? h.insight.slice(0, 80) + '...' : ''}</small></td>
+      <td style="color:var(--text-muted);font-size:.8rem;">${h.ts || '-'}</td>
+    </tr>`).join('') :
+    '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">No records found in MongoDB</td></tr>';
+}
+
+async function loadAnalyticsAdvisor() {
+  try {
+    const data = await fetchAnalyticsSummary();
+    const insights = data.ai_insights || [];
+    document.getElementById('analytics-ai-insights').innerHTML = insights.length
+      ? insights.map(x => `<div class="insight-box"><div class="insight-title">AI Business Insight</div><p>${x}</p></div>`).join('')
+      : '<p>No insights available yet. Run predictions first.</p>';
+  } catch (e) {
+    showToast('Could not load AI insights', 'error');
+  }
+}
+
+async function drawAnalyticsCharts() {
+  let analytics = null;
+  try { analytics = await fetchAnalyticsSummary(); await fetchHistory(); } catch { showToast('Could not load analytics', 'error'); }
+  analyticCharts.forEach(c => c.destroy && c.destroy());
+  analyticCharts = [];
+  const style = document.getElementById('an-chart-style')?.value || 'bar';
+  const chartType = style === 'line' ? 'line' : 'bar';
+  const history = predHistory.length ? predHistory.slice(0, 12).reverse() : [];
+  const labels = history.map(h => h.product_name || 'Product');
+  const priceValues = history.map(h => h.price);
+  const discountValues = history.map(h => h.discount);
+  const salesValues = history.map(h => h.sales);
+  const mkChart = (id, type, labels, data, color, xlabel, ylabel) => {
+    const canvas = document.getElementById(id); if (!canvas) return null;
+    const c = new Chart(canvas.getContext('2d'), {
+      type,
+      data: { labels: labels.length ? labels : ['No Data'], datasets:[{ label:ylabel, data: data.length ? data : [0], backgroundColor: color+'55', borderColor: color, borderWidth:2, fill:type==='line', tension:.4, pointRadius:5, borderRadius:8 }] },
+      options: { responsive:true, plugins:{ legend:{display:false} }, scales: type==='doughnut' || type==='pie' ? {} : { x:{title:{display:true,text:xlabel}}, y:{title:{display:true,text:ylabel}} } }
+    });
+    analyticCharts.push(c); return c;
+  };
+  if (style === 'doughnut') {
+    const cats = analytics?.category_summary || [];
+    mkChart('priceChart','doughnut', cats.map(c=>c.category), cats.map(c=>c.average_sales), '#6c63ff','Category','Average Sales');
+    mkChart('discountChart','doughnut', (analytics?.product_summary||[]).slice(0,6).map(p=>p.product_name), (analytics?.product_summary||[]).slice(0,6).map(p=>p.average_sales), '#10b981','Product','Average Sales');
+  } else {
+    mkChart('priceChart', chartType, labels, salesValues, '#6c63ff','Product','Predicted Sales');
+    mkChart('discountChart', chartType, labels, discountValues, '#10b981','Product','Discount %');
+  }
+  const promoCanvas = document.getElementById('promoChart');
+  if (promoCanvas) {
+    const c = new Chart(promoCanvas.getContext('2d'), {
+      type:'pie',
+      data:{ labels:['Promotion Active','No Promotion'], datasets:[{ data:[analytics?.promotion_active_count || 0, analytics?.promotion_inactive_count || 0], backgroundColor:['rgba(16,185,129,.75)','rgba(239,68,68,.75)'] }]},
+      options:{ responsive:true }
+    });
+    analyticCharts.push(c);
+  }
+  const distCanvas = document.getElementById('distChart');
+  if (distCanvas) {
+    const c = new Chart(distCanvas.getContext('2d'), {
+      type:'bar',
+      data:{ labels:['Min','Average','Max'], datasets:[{ data:[analytics?.min_sales||0, analytics?.average_sales||0, analytics?.max_sales||0], backgroundColor:['rgba(239,68,68,.7)','rgba(59,130,246,.7)','rgba(16,185,129,.7)'], borderRadius:8 }]},
+      options:{ responsive:true, plugins:{legend:{display:false}} }
+    });
+    analyticCharts.push(c);
+  }
+  await loadAnalyticsAdvisor();
+}
+
+
+// Restore logged-in session if token exists.
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = getToken();
+  const username = localStorage.getItem('username');
+  if (token && username) {
+    currentUser = username;
+    currentRole = localStorage.getItem('role') || 'user';
+    // Keep user on landing by default. Uncomment next line if you want auto-open dashboard on refresh.
+    // await enterApp(username);
+  }
+});
+</script>
+
 </body>
 </html>
