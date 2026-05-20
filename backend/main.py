@@ -457,15 +457,15 @@ def register(user: UserInput):
         "created_at": datetime.now()
     })
 
-    if user.email and user.email.strip() != "":
-     send_email(
-        user.email,
-        "Welcome to Smart Sales Predictor",
-        f"Hi {user.username}, your account has been created successfully with role: {role}."
-    )
+   # if user.email and user.email.strip() != "":
+    # send_email(
+     #   user.email,
+    #    "Welcome to Smart Sales Predictor",
+    #    f"Hi {user.username}, your account has been created successfully with role: {role}."
+    #)
 
-    log_activity(user.username, "Registered", f"User registered as {role}")
-    add_notification(user.username, "Welcome", "Your account has been created successfully.", "success")
+    #log_activity(user.username, "Registered", f"User registered as {role}")
+    #add_notification(user.username, "Welcome", "Your account has been created successfully.", "success")
 
     return {"message": "Registered successfully", "username": user.username, "role": role}
 
