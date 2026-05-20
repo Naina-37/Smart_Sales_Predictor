@@ -23,8 +23,8 @@ def train_model(data):
 
     # 4. Train model
     model = RandomForestRegressor(
-        n_estimators=200,
-        max_depth=15,
+        n_estimators=20,
+        max_depth=5,
         random_state=42
     )
 
@@ -47,33 +47,12 @@ def save_model(model):
 
 
 # LOAD MODEL
+# LOAD MODEL
 def load_model():
-    if os.path.exists("model.pkl"):
-        with open("model.pkl", "rb") as f:
-            model = pickle.load(f)
-        print("✅ Existing model loaded")
-
-    else:
-        print("⚡ model.pkl not found. Training new model...")
-
-        df = pd.read_csv("data/sales.csv")
-
-        X = df[["price", "discount", "promotion"]]
-        y = df["sales"]
-
-        model = RandomForestRegressor(
-            n_estimators=100,
-            random_state=42
-        )
-
-        model.fit(X, y)
-
-        with open("model.pkl", "wb") as f:
-            pickle.dump(model, f)
-
-        print("✅ New model trained successfully")
-
+    with open("model.pkl", "rb") as f:
+        model = pickle.load(f)
     return model
+
 
 #  TEST BLOCK
 if __name__ == "__main__":
