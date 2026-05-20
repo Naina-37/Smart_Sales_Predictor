@@ -10,3 +10,5 @@ numpy
 scikit-learn
 python-multipart
 email-validator
+google-auth
+google-auth-oauthlib
